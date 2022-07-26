@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:project_dicoding/data/model/fakestore_model.dart';
+import 'package:project_dicoding/data/source/remote_source.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<FakestoreModel>? fakestoreModel;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getProductsData();
+  }
+
+  getProductsData() async {
+    fakestoreModel = await RemoteSource().getProducts();
+    if (fakestoreModel != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    } else if (fakestoreModel == null) {
+      debugPrint("Error");
+    }
+  }
 
   Widget _buildHeading(){
     return SafeArea(
@@ -95,144 +122,41 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildAllContents(){
-    return Column(
-      children: [
-        Container(
-          height: 180,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.black12,
-          ),
-        ),
-        SizedBox(height: 8,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListView.builder(
+      itemCount: fakestoreModel != null? fakestoreModel!.length : 0,
+      itemBuilder: (context, index) {
+        return Column(
           children: [
-            Flexible(
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.black12,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.black12,
+                    ),
+                    child: Text('a'),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.black12,
+                SizedBox(width: 8,),
+                Flexible(
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.black12,
+                    ),
+                    child: fakestoreModel != null? Image.network(fakestoreModel![index].image) : Text("Data is empty")
+                  ),
                 ),
-              ),
+              ],
             ),
+            SizedBox(height: 8,),
           ],
-        ),
-        SizedBox(height: 8,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8,),
-        Container(
-          height: 180,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.black12,
-          ),
-        ),
-        SizedBox(height: 8,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-            SizedBox(width: 8,),
-            Flexible(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.black12,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -248,7 +172,7 @@ class HomePage extends StatelessWidget {
               _buildHeading(),
               _buildCategoryList(),
               SizedBox(height: 18,),
-              _buildAllContents(),
+              SizedBox(height: 150, child: _buildAllContents()),
             ],
           ),
         ),
