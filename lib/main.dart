@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_dicoding/pages/home/home.dart';
+import 'package:project_dicoding/pages/route.dart' as route;
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      onGenerateRoute: route.controller,
+      initialRoute: route.homePage,
+
     );
   }
 }
