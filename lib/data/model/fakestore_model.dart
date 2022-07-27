@@ -9,6 +9,10 @@ List<FakestoreModel> fakestoreModelFromJson(List<dynamic> json) {
 
 String fakestoreModelToJson(List<FakestoreModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<String> fakestoreCategoryFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
+
+String fakestoreCategoryToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));
+
 class FakestoreModel {
 
   int id;

@@ -11,11 +11,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<FakestoreModel>? fakestoreModel;
+  List<String>? fakestoreCategories;
+  bool _isSelected = false;
+  int selectedCategoryPosition = -1;
 
   @override
   void initState() {
     super.initState();
     getProductsData();
+    getCategoriesData();
   }
 
   getProductsData() async {
@@ -23,6 +27,24 @@ class _HomePageState extends State<HomePage> {
     if (fakestoreModel != null) {
       setState(() {});
     } else if (fakestoreModel == null) {
+      debugPrint("Error");
+    }
+  }
+
+  getCategoryProductData(String category) async {
+    fakestoreModel = await RemoteSource().getCategoryProducts(category);
+    if (fakestoreModel != null) {
+      setState(() {});
+    } else if (fakestoreModel == null) {
+      debugPrint("Error");
+    }
+  }
+
+  getCategoriesData() async {
+    fakestoreCategories = await RemoteSource().getCategories();
+    if (fakestoreCategories != null) {
+      setState(() {});
+    } else if (fakestoreCategories == null) {
       debugPrint("Error");
     }
   }
@@ -43,77 +65,58 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCategoryList(){
     return SizedBox(
       height: 45,
-      child: ListView(
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  getCategoryProductData(fakestoreCategories![index].toString());
+                  selectedCategoryPosition = index;
+                  _isSelected = (selectedCategoryPosition == index);
+                  setState(() {});
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: _isSelected
+                ? Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Text(
+                    fakestoreCategories![index].toString(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+                : Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Text(
+                    fakestoreCategories![index].toString(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8,),
+            ],
+          );
+        },
+        itemCount: fakestoreCategories != null ? fakestoreCategories!.length : 0,
         scrollDirection: Axis.horizontal,
-        children: [
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.black87,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: Text(
-              "All",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 8,),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: Text(
-              "Electronics",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-              ),
-            ),
-          ),
-          SizedBox(width: 8,),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: Text(
-              "Men's Clothing",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-              ),
-            ),
-          ),
-          SizedBox(width: 8,),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-            child: Text(
-              "Women's Clothing",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
