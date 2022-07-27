@@ -122,46 +122,50 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildAllContents(){
-    return ListView.builder(
-      itemCount: fakestoreModel != null? fakestoreModel!.length : 0,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.black12,
+    return Visibility(
+      visible: isLoaded,
+      child: GridView.builder(
+        padding: EdgeInsets.zero,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (_, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 1), // changes position of shadow
                     ),
-                    child: Text('a'),
+                  ],
+                  color: Colors.black12,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.network(
+                    fakestoreModel![index].image,
+                    fit: BoxFit.fill,
                   ),
                 ),
-                SizedBox(width: 8,),
-                Flexible(
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.black12,
-                    ),
-                    child: fakestoreModel != null? Image.network(fakestoreModel![index].image) : Text("Data is empty")
-                  ),
-                ),
-              ],
             ),
-            SizedBox(height: 8,),
-          ],
-        );
-      },
+          );
+        },
+        itemCount: fakestoreModel!.length,
+      ),
+      replacement: RefreshProgressIndicator(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -171,8 +175,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               _buildHeading(),
               _buildCategoryList(),
-              SizedBox(height: 18,),
-              SizedBox(height: 150, child: _buildAllContents()),
+              SizedBox(height: 6,),
+              SizedBox(height: height-150, width: width, child: _buildAllContents()),
+
             ],
           ),
         ),

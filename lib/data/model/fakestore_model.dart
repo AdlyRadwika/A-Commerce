@@ -1,16 +1,10 @@
-// To parse this JSON data, do
-//
-//     final fakestoreModel = fakestoreModelFromJson(jsonString);
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 List<FakestoreModel> fakestoreModelFromJson(List<dynamic> json) {
-  // var result = List<FakestoreModel>.from(json.decode(str).map((x) => FakestoreModel.fromJson(x)));
   var data = json.map((e) => FakestoreModel.fromJson(e)).toList();
   return data;
-
 }
 
 String fakestoreModelToJson(List<FakestoreModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
