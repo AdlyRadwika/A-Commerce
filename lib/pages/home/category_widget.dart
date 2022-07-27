@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class CategoryWidget extends StatelessWidget {
   final Function(int position) onAreaClicked;
   final int itemPosition;
-  final List<String>? fakestoreCategories;
+  final String fakestoreCategories;
   final bool isSelected;
 
-  const CategoryWidget({Key? key, required this.onAreaClicked, required this.itemPosition, this.fakestoreCategories, required this.isSelected}) : super(key: key);
+  const CategoryWidget({Key? key, required this.onAreaClicked, required this.itemPosition, required this.fakestoreCategories, required this.isSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +17,15 @@ class CategoryWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: isSelected
           ? Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
           color: Colors.black87,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         child: Text(
-          fakestoreCategories![itemPosition].toString(),
-          style: TextStyle(
+          fakestoreCategories,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -33,15 +33,15 @@ class CategoryWidget extends StatelessWidget {
         ),
       )
           : Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
           color: Colors.black12,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         child: Text(
-          fakestoreCategories![itemPosition].toString(),
-          style: TextStyle(
+          fakestoreCategories,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -49,6 +49,5 @@ class CategoryWidget extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

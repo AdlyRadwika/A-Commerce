@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_dicoding/data/model/fakestore_model.dart';
 import 'package:project_dicoding/data/source/remote_source.dart';
+import 'package:project_dicoding/pages/home/category_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,7 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<FakestoreModel>? fakestoreModel;
   List<String>? fakestoreCategories;
-  bool _isSelected = false;
   int selectedCategoryPosition = -1;
 
   @override
@@ -67,49 +67,18 @@ class _HomePageState extends State<HomePage> {
       height: 45,
       child: ListView.builder(
         itemBuilder: (context, index) {
+          String categoryList = fakestoreCategories![index];
           return Row(
             children: [
-              InkWell(
-                onTap: () {
-                  getCategoryProductData(fakestoreCategories![index].toString());
-                  selectedCategoryPosition = index;
-                  _isSelected = (selectedCategoryPosition == index);
+              CategoryWidget(
+                itemPosition: index,
+                isSelected: selectedCategoryPosition == index,
+                fakestoreCategories: categoryList,
+                onAreaClicked: (itemPosition) {
+                  selectedCategoryPosition = itemPosition;
                   setState(() {});
+                  getCategoryProductData(categoryList.toString());
                 },
-                borderRadius: BorderRadius.circular(16),
-                child: _isSelected
-                ? Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Text(
-                    fakestoreCategories![index].toString(),
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-                : Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Text(
-                    fakestoreCategories![index].toString(),
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
               ),
               SizedBox(width: 8,),
             ],
@@ -172,9 +141,16 @@ class _HomePageState extends State<HomePage> {
               _buildHeading(),
               _buildCategoryList(),
               SizedBox(height: 8,),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height)-150,
-                child: _buildAllContents(),
+              RefreshIndicator(
+                onRefresh: () async {
+                  getProductsData();
+                  getCategoriesData();
+                  selectedCategoryPosition = -1;
+                },
+                child: SizedBox(
+                  height: (MediaQuery.of(context).size.height)-150,
+                  child: _buildAllContents(),
+                ),
               ),
             ],
           ),
