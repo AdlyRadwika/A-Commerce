@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 List<FakestoreModel> fakestoreModelFromJson(List<dynamic> json) {
   var data = json.map((e) => FakestoreModel.fromJson(e)).toList();
   return data;

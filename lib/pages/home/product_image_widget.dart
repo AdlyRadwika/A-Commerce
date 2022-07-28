@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/route.dart' as route;
+import 'package:project_dicoding/pages/product detail/product_detail.dart';
 
 class ProductContentsWidget extends StatelessWidget {
-  final List<FakestoreModel>? fakestoreModel;
-  final int index;
+  final FakestoreModel product;
 
-  const ProductContentsWidget({Key? key, required this.fakestoreModel, required this.index}) : super(key: key);
+  const ProductContentsWidget({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(route.productDetailPage);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return ProductDetailPage(product: product);
+        },));
       },
       borderRadius: BorderRadius.circular(25),
       child: Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Container(
           height: 150,
           decoration: BoxDecoration(
@@ -34,7 +35,7 @@ class ProductContentsWidget extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(25),
             child: Image.network(
-              fakestoreModel![index].image,
+              product.image,
               fit: BoxFit.fill,
             ),
           ),

@@ -104,14 +104,14 @@ class _HomePageState extends State<HomePage> {
         crossAxisCount: 2,
       ),
       itemBuilder: (_, index) {
+        final FakestoreModel fakestoreModelList = fakestoreModel![index];
         return ProductContentsWidget(
-          fakestoreModel: fakestoreModel,
-          index: index,
+          product: fakestoreModelList,
         );
       },
       itemCount: fakestoreModel != null? fakestoreModel!.length : 0,
     )
-    : const Center(child: RefreshProgressIndicator());
+    : const Center(child: CircularProgressIndicator());
   }
 
   @override
