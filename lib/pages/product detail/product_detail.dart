@@ -20,7 +20,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Scaffold(
       body: SafeArea(
         top: true,
-        //problem #1
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -93,95 +92,112 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                 ]
               ),
-              Container(
-                color: Colors.white,
-                child: Container(
-                  //problem #2
-                  //height:
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    color: Colors.black26,
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.3),
+                    color: Colors.white,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                        color: Colors.black12,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 85,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.black87,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(
-                                  Icons.star_border,
-                                  size: 24,
-                                  color: Colors.white,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 85,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(25),
                                 ),
-                                Text(
-                                  widget.product.rating.rate.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Icon(
+                                      Icons.star_border,
+                                      size: 24,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      widget.product.rating.rate.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                              Text(
+                                NumberFormat.simpleCurrency().format(
+                                    widget.product.price
+                                ),
+                                textAlign: TextAlign.end,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 32,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20,),
+                          Text(
+                            widget.product.title,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
                             ),
+                            textAlign: TextAlign.start,
                           ),
                           Text(
-                            NumberFormat.simpleCurrency().format(
-                                widget.product.price
-                            ),
-                            textAlign: TextAlign.end,
+                            widget.product.description,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
                             ),
+                            textAlign: TextAlign.start,
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 20,),
-                      Text(
-                        widget.product.title,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                      Text(
-                        widget.product.description,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                    ),
+                    ),
+                  ),
                 ),
-                ),
-              )
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: OutlinedButton(
-          onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(route.homePage, (route) => false);
-          },
-          child: const Text("Buy this product"),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.black87,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25)
+          ),
+          textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Buy this product",
+          ),
         ),
       ),
     );
