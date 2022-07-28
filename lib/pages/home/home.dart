@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_dicoding/data/model/fakestore_model.dart';
 import 'package:project_dicoding/data/source/remote_source.dart';
 import 'package:project_dicoding/pages/home/category_widget.dart';
+import 'package:project_dicoding/pages/home/product_image_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -50,13 +51,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeading(){
-    return SafeArea(
+    return const SafeArea(
       top: true,
-      child: Text(
-        "Choose our products!",
-        style: TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          "A-Commerce's Catalogue",
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -70,6 +74,7 @@ class _HomePageState extends State<HomePage> {
           String categoryList = fakestoreCategories![index];
           return Row(
             children: [
+              const SizedBox(width: 4,),
               CategoryWidget(
                 itemPosition: index,
                 isSelected: selectedCategoryPosition == index,
@@ -80,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   getCategoryProductData(categoryList.toString());
                 },
               ),
-              SizedBox(width: 8,),
+              const SizedBox(width: 4,),
             ],
           );
         },
@@ -90,38 +95,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAllContents(){
+  Widget _buildProductImages(){
     return fakestoreModel != null
     ? GridView.builder(
       padding: EdgeInsets.zero,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      scrollDirection: Axis.vertical,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
       itemBuilder: (_, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Container(
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1), // changes position of shadow
-                  ),
-                ],
-                color: Colors.black12,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Image.network(
-                  fakestoreModel![index].image,
-                  fit: BoxFit.fill,
-                ),
-              ),
-          ),
+        return ProductContentsWidget(
+          fakestoreModel: fakestoreModel,
+          index: index,
         );
       },
       itemCount: fakestoreModel != null? fakestoreModel!.length : 0,
@@ -132,29 +117,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeading(),
-              _buildCategoryList(),
-              SizedBox(height: 8,),
-              RefreshIndicator(
-                onRefresh: () async {
-                  getProductsData();
-                  getCategoriesData();
-                  selectedCategoryPosition = -1;
-                },
-                child: SizedBox(
-                  height: (MediaQuery.of(context).size.height)-150,
-                  child: _buildAllContents(),
-                ),
-              ),
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeading(),
+          _buildCategoryList(),
+          const SizedBox(height: 8,),
+          RefreshIndicator(
+            onRefresh: () async {
+              getProductsData();
+              getCategoriesData();
+              selectedCategoryPosition = -1;
+            },
+            child: SizedBox(
+              height: (MediaQuery.of(context).size.height)-150,
+              child: _buildProductImages(),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

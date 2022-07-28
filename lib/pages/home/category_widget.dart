@@ -14,19 +14,19 @@ class CategoryWidget extends StatelessWidget {
       onTap: () {
         onAreaClicked(itemPosition);
       },
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(25),
       child: isSelected
           ? Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
           color: Colors.black87,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: Text(
           fakestoreCategories,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -37,12 +37,12 @@ class CategoryWidget extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.black12,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: Text(
           fakestoreCategories,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
