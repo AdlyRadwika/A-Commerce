@@ -91,79 +91,73 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       child: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.3),
-          color: Colors.white,
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-              color: Colors.black12,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 85,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Icon(
-                            Icons.star_border,
-                            size: 24,
+          decoration: const BoxDecoration(
+            color: Colors.black12,
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 85,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.black87,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Icon(
+                          Icons.star_border,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          widget.product.rating.rate.toString(),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          Text(
-                            widget.product.rating.rate.toString(),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      NumberFormat.simpleCurrency().format(
-                          widget.product.price
-                      ),
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                      ),
+                  ),
+                  Text(
+                    NumberFormat.simpleCurrency().format(
+                        widget.product.price
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20,),
-                Text(
-                  widget.product.title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                    ),
                   ),
-                  textAlign: TextAlign.start,
+                ],
+              ),
+              const SizedBox(height: 20,),
+              Text(
+                widget.product.title,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
                 ),
-                Text(
-                  widget.product.description,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  textAlign: TextAlign.start,
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(height: 4,),
+              Text(
+                widget.product.description,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
                 ),
-              ],
-            ),
+                textAlign: TextAlign.start,
+              ),
+            ],
           ),
         ),
       ),
@@ -172,6 +166,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final FakestoreModel fakestoreModelList = fakestoreModel![index];
     return Scaffold(
       body: SafeArea(
         top: true,
@@ -187,7 +182,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const BuyNowButton(),
+      floatingActionButton: BuyNowButton(product: widget.product,),
     );
   }
 }
