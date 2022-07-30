@@ -13,18 +13,22 @@ class TransactionPage extends StatefulWidget {
 
 class _TransactionPageState extends State<TransactionPage> {
   int count = 1;
+  double total = 0;
 
-  void increaseQuantity(){
+  increaseQuantity(double productPrice){
     count++;
+    total = productPrice * count;
     setState(() {});
   }
 
-  void decreaseQuantity(){
+  decreaseQuantity(double productPrice){
     if (count > 1) {
       count--;
+      total = (productPrice * (count + 1) ) - productPrice;
       setState(() {});
     } else {
       count = 1;
+      total = productPrice;
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't decrease the quantity"),
@@ -33,8 +37,15 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   @override
+  void initState() {
+    total = widget.product.price + 10;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var productTitle = widget.product.title;
+    double productPrice = widget.product.price;
 
     return Scaffold(
       appBar: AppBar(
@@ -101,28 +112,161 @@ class _TransactionPageState extends State<TransactionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
+                  "Shipping to",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8,),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                        color: Colors.black,
+                        width: 1
+                    )
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.home,
+                        size: 40,
+                      ),
+                      const SizedBox(width: 8,),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Text(
+                              "My House",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("St. Somewher...",),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Text(
+                              "John Doe",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("0821xxxxxxxxx")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 12,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Payment",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8,),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                        color: Colors.black,
+                        width: 1
+                    )
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.credit_card,
+                        size: 40,
+                      ),
+                      const SizedBox(width: 8,),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Text(
+                              "Credit Card",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("NewbieCard",),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Text(
+                              "John D. M.",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text("1234-xxxx-xxxx-xxxx")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 12,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
                   "Quantity",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 4,),
+                const SizedBox(height: 8,),
                 Container(
                   height: 60,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1
-                    )
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: Colors.black,
+                          width: 1
+                      )
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
                         onPressed: () {
-                          decreaseQuantity();
+                          decreaseQuantity(productPrice);
+                          setState(() {});
                         },
                         icon: const Icon(
                           Icons.remove,
@@ -138,7 +282,8 @@ class _TransactionPageState extends State<TransactionPage> {
                       ),
                       IconButton(
                         onPressed: () {
-                          increaseQuantity();
+                          increaseQuantity(productPrice);
+                          setState(() {});
                         },
                         icon: const Icon(
                           Icons.add,
@@ -154,44 +299,107 @@ class _TransactionPageState extends State<TransactionPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Shipping to",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Total",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      NumberFormat.simpleCurrency().format(
+                        total
+                      ),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4,),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 1
-                    )
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("One"),
-                          Text("Three"),
-                        ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Product(s)",
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Two"),
-                          Text("Four"),
-                        ],
+                    ),
+                    Text("+ ${NumberFormat.simpleCurrency().format(
+                        productPrice
+                      )}",
+                      style: const TextStyle(
+                        fontSize: 16
                       ),
-                    ],
-                  ),
-                )
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      "Fee",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      r"+ $10",
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Quantity",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      "+ $count",
+                      style: const TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                  ],
+                ),
               ],
+            ),
+            const SizedBox(height: 24,),
+            Center(
+              child: ElevatedButton(
+              onPressed: () {
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              // },));
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+                ),
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Continue",
+                  ),
+                ),
+              ),
             ),
           ],
         ),
