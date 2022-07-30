@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_dicoding/data/model/fakestore_model.dart';
+import 'package:project_dicoding/pages/transaction/continue_button_widget.dart';
+import 'package:project_dicoding/pages/transaction/buyer_info_widget.dart';
 
 class TransactionPage extends StatefulWidget {
   final FakestoreModel product;
@@ -42,6 +44,200 @@ class _TransactionPageState extends State<TransactionPage> {
     super.initState();
   }
 
+  Widget _buildProductPicked(String productTitle) {
+    return Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: const Offset(0, 1),
+                ),
+              ]
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              widget.product.image,
+              height: 120,
+              width: 200,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              productTitle.replaceRange(8, productTitle.length, '...'),
+              textAlign: TextAlign.start,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 4,),
+            Text(
+              NumberFormat.simpleCurrency().format(
+                  widget.product.price
+              ),
+              textAlign: TextAlign.start,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuantityButton(double productPrice) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Quantity",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8,),
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                  color: Colors.black,
+                  width: 1
+              )
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () {
+                  decreaseQuantity(productPrice);
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.remove,
+                ),
+                iconSize: 32,
+              ),
+              Text(
+                count.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  increaseQuantity(productPrice);
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+                iconSize: 32,
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildTotalSection(double productPrice) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Total",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              NumberFormat.simpleCurrency().format(
+                  total
+              ),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Product(s)",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text("+ ${NumberFormat.simpleCurrency().format(
+                productPrice
+            )}",
+              style: const TextStyle(
+                  fontSize: 16
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Text(
+              "Fee",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              r"+ $10",
+              style: TextStyle(
+                  fontSize: 16
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Quantity",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              "+ $count",
+              style: const TextStyle(
+                  fontSize: 16
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var productTitle = widget.product.title;
@@ -56,354 +252,33 @@ class _TransactionPageState extends State<TransactionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: const Offset(0, 1),
-                      ),
-                    ]
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      widget.product.image,
-                      height: 120,
-                      width: 200,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      productTitle.replaceRange(8, productTitle.length, '...'),
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 24,
-                      ),
-                    ),
-                    const SizedBox(height: 4,),
-                    Text(
-                      NumberFormat.simpleCurrency().format(
-                        widget.product.price
-                      ),
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            _buildProductPicked(productTitle),
             const SizedBox(height: 12,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Shipping to",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 1
-                    )
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.home,
-                        size: 40,
-                      ),
-                      const SizedBox(width: 8,),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              "My House",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text("St. Somewher...",),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              "John Doe",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text("0821xxxxxxxxx")
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+            const BuyerInfo(
+              title: "Shipping to",
+              icon: "home",
+              iconLabel: "My House",
+              iconDetail: "St. Somewher...",
+              userName: "John Doe",
+              userDetail: "0821xxxxxxxx"),
             const SizedBox(height: 12,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Payment",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 1
-                    )
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.credit_card,
-                        size: 40,
-                      ),
-                      const SizedBox(width: 8,),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              "Credit Card",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text("NewbieCard",),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              "John D. M.",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text("1234-xxxx-xxxx-xxxx")
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+            const BuyerInfo(
+                title: "Payment",
+                icon: "credit card",
+                iconLabel: "Credit Card",
+                iconDetail: "NewbieCard",
+                userName: "John D. M.",
+                userDetail: "1234-xxxx-xxxx-xxxx"),
             const SizedBox(height: 12,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Quantity",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                          color: Colors.black,
-                          width: 1
-                      )
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          decreaseQuantity(productPrice);
-                          setState(() {});
-                        },
-                        icon: const Icon(
-                          Icons.remove,
-                        ),
-                        iconSize: 32,
-                      ),
-                      Text(
-                        count.toString(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          increaseQuantity(productPrice);
-                          setState(() {});
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                        ),
-                        iconSize: 32,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+            _buildQuantityButton(productPrice),
             const SizedBox(height: 12,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Total",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      NumberFormat.simpleCurrency().format(
-                        total
-                      ),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Product(s)",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text("+ ${NumberFormat.simpleCurrency().format(
-                        productPrice
-                      )}",
-                      style: const TextStyle(
-                        fontSize: 16
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      "Fee",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      r"+ $10",
-                      style: TextStyle(
-                        fontSize: 16
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Quantity",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "+ $count",
-                      style: const TextStyle(
-                          fontSize: 16
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            _buildTotalSection(productPrice),
             const SizedBox(height: 24,),
-            Center(
-              child: ElevatedButton(
-              onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              // },));
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "Continue",
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const ContinueButton(),
     );
   }
 }
