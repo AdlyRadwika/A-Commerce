@@ -50,43 +50,31 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildHeading(){
-    return const SafeArea(
-      top: true,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          "A-Commerce's Catalogue",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildCategoryList(){
-    return SizedBox(
-      height: 45,
+    return Container(
+      color: Colors.black,
+      height: 60,
       child: ListView.builder(
         itemBuilder: (context, index) {
           String categoryList = fakestoreCategories![index];
-          return Row(
-            children: [
-              const SizedBox(width: 4,),
-              CategoryWidget(
-                itemPosition: index,
-                isSelected: selectedCategoryPosition == index,
-                fakestoreCategories: categoryList,
-                onAreaClicked: (itemPosition) {
-                  selectedCategoryPosition = itemPosition;
-                  setState(() {});
-                  getCategoryProductData(categoryList.toString());
-                },
-              ),
-              const SizedBox(width: 4,),
-            ],
+          return Container(
+            color: Colors.black,
+            child: Row(
+              children: [
+                const SizedBox(width: 4,),
+                CategoryWidget(
+                  itemPosition: index,
+                  isSelected: selectedCategoryPosition == index,
+                  fakestoreCategories: categoryList,
+                  onAreaClicked: (itemPosition) {
+                    selectedCategoryPosition = itemPosition;
+                    setState(() {});
+                    getCategoryProductData(categoryList.toString());
+                  },
+                ),
+                const SizedBox(width: 4,),
+              ],
+            ),
           );
         },
         itemCount: fakestoreCategories != null ? fakestoreCategories!.length : 0,
@@ -98,6 +86,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildProductImages(){
     return fakestoreModel != null
     ? GridView.builder(
+      shrinkWrap: true,
+      primary: false,
       padding: EdgeInsets.zero,
       scrollDirection: Axis.vertical,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -117,21 +107,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "A-Commerce's Catalogue",
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white
+          ),
+        ),
+        backgroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeading(),
           _buildCategoryList(),
-          const SizedBox(height: 8,),
-          RefreshIndicator(
-            onRefresh: () async {
-              getProductsData();
-              getCategoriesData();
-              selectedCategoryPosition = -1;
-            },
-            child: SizedBox(
-              height: (MediaQuery.of(context).size.height)-150,
-              child: _buildProductImages(),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                getProductsData();
+                getCategoriesData();
+                selectedCategoryPosition = -1;
+              },
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: _buildProductImages()
+              ),
             ),
           ),
         ],

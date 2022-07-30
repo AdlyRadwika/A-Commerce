@@ -43,7 +43,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, route.homePage);
+                      Navigator.pushNamedAndRemoveUntil(context, route.homePage, (route) => false);
                     },
                     icon: const Icon(
                       Icons.arrow_back_rounded,

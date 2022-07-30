@@ -17,7 +17,7 @@ class ProductContentsWidget extends StatelessWidget {
       },
       borderRadius: BorderRadius.circular(25),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Container(
           height: 150,
           decoration: BoxDecoration(

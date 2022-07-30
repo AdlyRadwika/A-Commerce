@@ -245,7 +245,11 @@ class _TransactionPageState extends State<TransactionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Buy Now"),
+        title: const Text(
+          "Buy Now",
+        ),
+        backgroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
