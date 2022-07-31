@@ -42,16 +42,12 @@ class _TransactionPageState extends State<TransactionPage> {
 
   updateProductData(int productID, FakestoreModel product) async {
     fakestoreModel = await RemoteSource().updateProduct(productID, product);
-    if (fakestoreModel != null) {
-      setState(() {});
-    } else if (fakestoreModel == null) {
-      debugPrint("Error");
-    }
   }
 
   @override
   void initState() {
-    total = widget.product.price + 10;
+    widget.product.price += 10;
+    total = widget.product.price;
     super.initState();
   }
 
@@ -95,7 +91,7 @@ class _TransactionPageState extends State<TransactionPage> {
             const SizedBox(height: 4,),
             Text(
               NumberFormat.simpleCurrency().format(
-                  widget.product.price
+                  (widget.product.price - 10)
               ),
               textAlign: TextAlign.start,
               style: const TextStyle(
@@ -203,7 +199,7 @@ class _TransactionPageState extends State<TransactionPage> {
               ),
             ),
             Text("+ ${NumberFormat.simpleCurrency().format(
-                productPrice
+                productPrice - 10
             )}",
               style: const TextStyle(
                   fontSize: 16
@@ -299,9 +295,6 @@ class _TransactionPageState extends State<TransactionPage> {
           widget.product.price = total;
           updateProductData(widget.product.id, widget.product);
 
-          // Navigator.of(context).push(
-          //     MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product))
-          // );
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product,)), (route) => false);
         },
