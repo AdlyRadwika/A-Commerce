@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:project_dicoding/data/model/fakestore_model.dart';
+import 'package:project_dicoding/pages/completion/completion.dart';
 
 class ContinueButton extends StatelessWidget {
-  const ContinueButton({Key? key}) : super(key: key);
+  final FakestoreModel product;
+
+  const ContinueButton({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        // },));
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => CompletionPage(product: product))
+        );
+        // Navigator.of(context).pushAndRemoveUntil(
+        //   MaterialPageRoute(builder: (context) => CompletionPage(product: product,)), (route) => false);
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.black,

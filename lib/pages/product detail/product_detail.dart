@@ -166,7 +166,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final FakestoreModel fakestoreModelList = fakestoreModel![index];
     return Scaffold(
       body: SafeArea(
         top: true,

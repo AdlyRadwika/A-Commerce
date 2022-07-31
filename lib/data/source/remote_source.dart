@@ -38,4 +38,17 @@ class RemoteSource {
     }
     return [];
   }
+
+  Future<List<Object>> updateProduct(int productID, FakestoreModel product) async {
+    var url = Uri.parse("https://fakestoreapi.com/products/$productID");
+    var response = await client.put(url);
+    if(response.statusCode == 204){
+      var json = response.body;
+      var result = (jsonDecode(json) as List<dynamic>).map((e) => product.toJson()).toList();
+      return result;
+    }
+    return [];
+  }
+
+
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/transaction/continue_button_widget.dart';
+import 'package:project_dicoding/data/source/remote_source.dart';
 import 'package:project_dicoding/pages/transaction/buyer_info_widget.dart';
+import 'package:project_dicoding/pages/completion/completion.dart';
 
 class TransactionPage extends StatefulWidget {
   final FakestoreModel product;
@@ -14,6 +15,7 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
+  List<Object>? fakestoreModel;
   int count = 1;
   double total = 0;
 
@@ -35,6 +37,15 @@ class _TransactionPageState extends State<TransactionPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't decrease the quantity"),
       ));
+    }
+  }
+
+  updateProductData(int productID, FakestoreModel product) async {
+    fakestoreModel = await RemoteSource().updateProduct(productID, product);
+    if (fakestoreModel != null) {
+      setState(() {});
+    } else if (fakestoreModel == null) {
+      debugPrint("Error");
     }
   }
 
@@ -282,7 +293,36 @@ class _TransactionPageState extends State<TransactionPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const ContinueButton(),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+
+          widget.product.price = total;
+          updateProductData(widget.product.id, widget.product);
+
+          // Navigator.of(context).push(
+          //     MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product))
+          // );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product,)), (route) => false);
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15)
+          ),
+          textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Continue",
+          ),
+        ),
+      ),
     );
   }
 }
