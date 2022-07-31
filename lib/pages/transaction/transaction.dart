@@ -289,30 +289,33 @@ class _TransactionPageState extends State<TransactionPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
+      floatingActionButton: SizedBox(
+        width: 360,
+        child: ElevatedButton(
+          onPressed: () {
+            widget.product.price = total;
+            updateProductData(widget.product.id, widget.product);
 
-          widget.product.price = total;
-          updateProductData(widget.product.id, widget.product);
-
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product,)), (route) => false);
-        },
-        style: ElevatedButton.styleFrom(
-          primary: Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15)
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product, quantity: count,)), (route) => false
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+            ),
+            textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold
+            ),
           ),
-          textStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.bold
-          ),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Continue",
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Continue",
+            ),
           ),
         ),
       ),

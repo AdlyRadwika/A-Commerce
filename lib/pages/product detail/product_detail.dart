@@ -90,7 +90,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.3),
+          height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.25),
           decoration: const BoxDecoration(
             color: Colors.black12,
           ),
@@ -181,7 +181,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BuyNowButton(product: widget.product,),
+      floatingActionButton: SizedBox(
+        width: 360,
+        child: BuyNowButton(product: widget.product,)
+      ),
     );
   }
 }
