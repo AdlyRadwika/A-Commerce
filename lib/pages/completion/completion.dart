@@ -134,7 +134,7 @@ class CompletionPage extends StatelessWidget {
                       textAlign: TextAlign.start,
                     ),
                     Text(
-                      productTitle.replaceRange(15, productTitle.length, '...'),
+                      productTitle.replaceRange(12, productTitle.length, '...'),
                       textAlign: TextAlign.end,
                     ),
                   ],
