@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
 import 'package:project_dicoding/data/source/remote_source.dart';
-import 'package:project_dicoding/pages/home/category_widget.dart';
-import 'package:project_dicoding/pages/home/product_image_widget.dart';
+
+import 'package:project_dicoding/pages/home/widgets/category_widget.dart';
+import 'package:project_dicoding/pages/home/widgets/product_image_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/product detail/product_detail.dart';
+
+import 'package:project_dicoding/pages/route.dart' as route;
 
 class ProductContentsWidget extends StatelessWidget {
   final FakestoreModel product;
@@ -11,9 +13,7 @@ class ProductContentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return ProductDetailPage(product: product);
-        },));
+        Navigator.pushNamed(context, route.productDetailPage, arguments: product);
       },
       borderRadius: BorderRadius.circular(25),
       child: Padding(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
 import 'package:project_dicoding/data/source/remote_source.dart';
-import 'package:project_dicoding/pages/transaction/buyer_info_widget.dart';
-import 'package:project_dicoding/pages/completion/completion.dart';
+
+import 'package:project_dicoding/pages/transaction/widget/buyer_info_widget.dart';
+import 'package:project_dicoding/pages/route.dart' as route;
 
 class TransactionPage extends StatefulWidget {
   final FakestoreModel product;
@@ -296,9 +298,8 @@ class _TransactionPageState extends State<TransactionPage> {
             widget.product.price = total;
             updateProductData(widget.product.id, widget.product);
 
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => CompletionPage(product: widget.product, quantity: count,)), (route) => false
-            );
+            CompletionPageArguments arguments = CompletionPageArguments(product: widget.product, quantity: count);
+            Navigator.pushNamedAndRemoveUntil(context, route.completionPage, (route) => false, arguments: arguments);
           },
           style: ElevatedButton.styleFrom(
             primary: Colors.black,
@@ -321,4 +322,11 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
     );
   }
+}
+
+class CompletionPageArguments {
+  FakestoreModel product;
+  int quantity;
+
+  CompletionPageArguments({required this.product, required this.quantity});
 }

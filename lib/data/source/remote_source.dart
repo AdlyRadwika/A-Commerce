@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
 
 class RemoteSource {

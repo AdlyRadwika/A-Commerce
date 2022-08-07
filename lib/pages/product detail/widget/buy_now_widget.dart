@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/transaction/transaction.dart';
+
+import 'package:project_dicoding/pages/route.dart' as route;
 
 class BuyNowButton extends StatelessWidget {
   final FakestoreModel product;
@@ -11,9 +13,7 @@ class BuyNowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return TransactionPage(product: product);
-        },));
+        Navigator.pushNamed(context, route.transactionPage, arguments: product);
       },
       style: ElevatedButton.styleFrom(
         primary: Colors.black,

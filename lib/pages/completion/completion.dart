@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/route.dart' as route;
 
+import 'package:project_dicoding/data/model/fakestore_model.dart';
+
+import 'package:project_dicoding/pages/route.dart' as route;
 
 class CompletionPage extends StatelessWidget {
   final FakestoreModel product;

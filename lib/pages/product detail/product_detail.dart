@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:project_dicoding/data/model/fakestore_model.dart';
-import 'package:project_dicoding/pages/product detail/buy_now_widget.dart';
+
+import 'package:project_dicoding/pages/product%20detail/widget/buy_now_widget.dart';
 import 'package:project_dicoding/pages/route.dart' as route;
 
 class ProductDetailPage extends StatefulWidget {
