@@ -1,16 +1,12 @@
-# project_dicoding
+# A-Commerce
 
 A submission for Dicoding's flutter beginner course
 
-## Getting Started
+## Preview
 
-This project is a starting point for a Flutter application.
+<a href="https://gyazo.com/41dd980b969c5e0bc48dd73f9ca871ef"><img src="https://i.gyazo.com/41dd980b969c5e0bc48dd73f9ca871ef.gif" alt="Image from Gyazo" width="332"/></a>
 
-A few resources to get you started if this is your first Flutter project:
+<a href="https://gyazo.com/7e54c6c219852cd55e5d68695c9f0dd5"><img src="https://i.gyazo.com/7e54c6c219852cd55e5d68695c9f0dd5.gif" alt="Image from Gyazo" width="332"/></a>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Resources
+- [Fakestore Api](https://fakestoreapi.com/)
